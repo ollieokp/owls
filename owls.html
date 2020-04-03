@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+	<title>
+		Owls!
+	</title>
+	<script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+	<script src="js/game_code.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@9"></script>
+	<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="stylesheet.css" media="screen"></link>
+	<!--<audio><source src="Ava_Max-So_Am_I.mp3" type="audio/mpeg" /></audio>
+	<audio autoplay="autoplay" loop="loop" ><source src="Ava_Max-So_Am_I.mp3" type="audio/mpeg"/></audio>-->
+
+	<style>
+		
+	</style>
+	<script>
+		'use strict';
+		
+		// ################
+		// Global variables				
+		
+		var time_step=250;
+		
+		var all_time_food=0;
+		var owl_food=100;
+	
+		var owlet_cost=100;
+		var owlets=0;
+		
+		var owl_cost=1000;
+		var owls=0;
+		
+		var pet_store_cost=10000;
+		var pet_stores=0;
+		
+		var factory_cost=100000;
+		var factories=0;
+
+		var bank_cost=1000000;
+		var banks=0;
+
+		var wizards=0;
+		var wizard_cost=10000000;
+
+		var portals=0;
+		var portal_cost=100000000;
+
+		var time_machines=0;
+		var time_machine_cost=1000000000;
+		
+		var warping_bonus=0;
+		
+		var catch_up_time=0;
+									
+		var link = document.querySelector("link[rel*='icon']") || document.createElement('link');
+		link.type = 'image/png';
+		link.rel = 'shortcut icon';
+		link.href = 'http://www.clker.com/cliparts/I/q/o/O/c/l/green-owl-hi.png';
+		document.getElementsByTagName('head')[0].appendChild(link);
+		
+
+
+		// ################
+		// Gain food and resources		
+		function add_owlets(){
+			if (owl_food == owlet_cost || owl_food > owlet_cost) {
+				owl_food = owl_food-owlet_cost;
+				owlets = owlets+1;
+				var owlet_inc = owlet_cost * 0.25;
+				owlet_cost = owlet_cost + owlet_inc;
+			}
+		}
+		function add_owls(){
+			if (owl_food == owl_cost || owl_food > owl_cost) {
+				owl_food = owl_food-owl_cost;
+				owls = owls+1;
+				var owl_inc = owl_cost * 0.50
+				owl_cost = owl_cost + owl_inc;
+			}
+		}
+		
+		function add_pet_stores(){
+			if (owl_food == pet_store_cost || owl_food > pet_store_cost) {
+				owl_food = owl_food-pet_store_cost;
+				pet_stores = pet_stores+1;
+				var pet_store_inc = pet_store_cost * 0.100;
+				pet_store_cost = pet_store_cost + pet_store_inc;
+			}
+		}
+		
+		function add_factories(){
+			if (owl_food >= factory_cost) {
+				owl_food = owl_food-factory_cost;
+				factories = factories+1;
+				var factory_inc = factory_cost * 0.200;
+				factory_cost = factory_cost + factory_inc;
+			}
+		}
+
+		function add_bank(){
+			if (owl_food >= bank_cost) {
+				owl_food -= bank_cost;
+				banks += 1;
+				var bank_inc = bank_cost * 0.400;
+				bank_cost +=bank_inc;
+			}
+		}
+
+		function add_wizard() {
+			if (owl_food >= wizard_cost) {
+				owl_food -= wizard_cost;
+				wizards += 1;
+				var wizard_inc = wizard_cost * 0.800;
+				wizard_cost += wizard_inc;
+			}
+		}
+
+		function add_portal() {
+			if (owl_food >= portal_cost) {
+				owl_food -= portal_cost;
+				portals += 1;
+				var portal_inc = portal_cost * 1600;
+				portal_cost += portal_inc;
+			}
+		}
+
+		function add_time_machine() {
+			if (owl_food >= time_machine_cost) {
+				owl_food -= time_machine_cost;
+				time_machines += 1;
+				var time_machine_inc = time_machine_cost * 2200;
+				time_machine_cost += time_machine_inc;
+			}
+		}
+
+		function add_owl_food() {
+			owl_food += 5;
+			all_time_food += 5;
+		}
+			
+
+		//##############
+		//warping
+
+	function warp() {
+      	  var warping_bonus_value = warping_bonus + all_time_food * 0.0000001
+          Swal.fire({
+              title: 'Are you sure?',
+              text: "Your warping bonus will be " + warping_bonus_value + "%",
+              icon: 'warning',
+              showCancelButton: true,
+              confirmButtonColor: '#3085d6',
+              cancelButtonColor: '#d33',
+              confirmButtonText: 'Yes, warp!'
+          }).then((result) => {
+              if (result.value) {
+                  Swal.fire(
+                      'Warped!',
+                      'You have successfully warped.',
+                      'success'
+                  )
+				  owlets = 0;
+			      owlet_cost = 100;
+				  owls = 0;
+				  owl_cost = 1000;
+				  pet_stores = 0;
+				  pet_store_cost = 10000;
+				  factories = 0;
+				  factory_cost = 100000;
+				  banks = 0;
+				  bank_cost = 1000000
+				  wizards = 0;
+				  wizard_cost = 10000000
+				  portals = 0;
+				  portal_cost = 100000000
+				  time_machines = 0;
+				  time_machine_cost = 1000000000
+				  owl_food = 100;
+				  warping_bonus += all_time_food * 0.0001;
+				  all_time_food = 0;
+					
+			  }
+		  })
+	}
+		
+		// ################
+		// Format and main loop section		
+		function format_number(x) {
+			var rnd;	
+			if (x >= 1e15) {
+				rnd = x / 1e12
+				rnd = Math.round(rnd);
+				rnd = rnd / 1000;
+				rnd = rnd + " quadrilion";
+			}	
+			else if (x >= 1e12) {
+				rnd = x / 1e9
+				rnd = Math.round(rnd);
+				rnd = rnd / 1000;
+				rnd = rnd + " trillion";
+			}	
+			else if (x >= 1e9) {
+				rnd = x / 1e6
+				rnd = Math.round(rnd);
+				rnd = rnd / 1000;
+				rnd = rnd + " billion";
+			}
+			else if (x >= 1e6) {
+				rnd = x / 1e3;
+				rnd = Math.round(rnd);
+				rnd = rnd / 1000;
+				rnd = rnd + " million";
+			}
+			else if (x >= 1e3) {
+				rnd = x / 100;
+				rnd = Math.round(rnd);
+				rnd = rnd / 10;
+				rnd = rnd +" thousand";
+			}
+			else {
+				rnd = Math.round(x);
+			}
+			return rnd;
+		}
+
+		function update_visibility(atf) {
+			update_single_visibility("add_owl_img","owl_tt", atf, 1000);
+			update_single_visibility("add_pet_store_img","pet_store_tt", atf, 10000);
+			update_single_visibility("add_factory_img","factory_tt", atf, 100000);
+			update_single_visibility("add_bank_img","bank_tt", atf, 1000000);
+			update_single_visibility("add_wizard_img","wizard_tt", atf, 10000000);
+			update_single_visibility("add_portal_img","portal_tt", atf, 100000000);
+			update_single_visibility("add_time_machine_img","time_machine_tt", atf, 1000000000);
+		}
+
+
+		function update_single_visibility(img_id, tt_id, atf, thresh) {
+			if (atf >= thresh) {
+				document.getElementById (img_id).style.visibility = "visible";
+				document.getElementById (tt_id).style.visibility = "visible";
+			}	
+			else {
+				document.getElementById (img_id).style.visibility = "hidden";
+				document.getElementById (tt_id).style.visibility = "hidden";
+			}
+		}
+
+		function update_buyable(food) {
+			update_single_buyable("add_owlet_img",food, owlet_cost);
+			update_single_buyable("add_owl_img",food, owl_cost);
+			update_single_buyable("add_pet_store_img",food, pet_store_cost);
+			update_single_buyable("add_factory_img",food, factory_cost);
+			update_single_buyable("add_bank_img", food, bank_cost);
+			update_single_buyable("add_wizard_img", food, wizard_cost);
+			update_single_buyable("add_portal_img",food, portal_cost);
+			update_single_buyable("add_time_machine_img", food, time_machine_cost);
+		}
+
+		function update_single_buyable(img_id, food, thresh) {
+			if (food >= thresh) {
+				document.getElementById (img_id).style.opacity = 1;
+			}
+			else {
+				document.getElementById (img_id).style.opacity = 0.4;
+			}
+		}
+
+		function update_numbers(fps){
+			$("span#owl_food_tt").text("You have " + format_number(owl_food) + " owl food");
+			$("span#food_prod_tt").text("You get " + format_number(fps) + " food per second");
+			$("span#pet_store_tt").text("Click to gain 1 pet store for " + format_number(pet_store_cost) + " owl food. " + "You have " + format_number(pet_stores) + " pet stores");	
+			$("span#owl_tt").text("Click to gain one 1 owl for " + format_number(owl_cost) + " owl food. " + "You have " + format_number(owls) + " owls");
+			$("span#owlet_tt").text("Click to gain 1 owlet for " + format_number(owlet_cost) + " owl food. " + "You have " + format_number(owlets) + " owlets");
+			$("span#factory_tt").text("Click to gain 1 factory for " + format_number(factory_cost) + " owl food. " + "You have " + format_number(factories) + " factories");
+			$("span#bank_tt").text("Click to gain 1 bank for " + format_number(bank_cost) + " owl food. " + "You have " + format_number(banks) + " banks");
+			$("span#wizard_tt").text("Click to gain 1 wizard for " + format_number(wizard_cost) + " owl food. " + "You have " + format_number(wizards) + " wizards");
+			$("span#portal_tt").text("Click to gain 1 portal for " + format_number(portal_cost) + " owl food. " + "You have " + format_number(portals) + " portals");
+			$("span#time_machine_tt").text("Click to gain 1 time machine for " + format_number(time_machine_cost) + " owl food. You have " + format_number(time_machines) + " time_machines");
+		}	
+		
+		//########################
+		//loop
+		
+		var intervalId = setInterval(function () {
+			var food_prod = (owlets + owls*2 + pet_stores*4 + factories*8 + banks * 16 + wizards*32 + portals*64 + time_machines*128) * time_step / 1000;
+			food_prod += food_prod * warping_bonus;
+			owl_food = owl_food + food_prod;
+			all_time_food += food_prod;
+			update_visibility(all_time_food);
+			update_buyable(owl_food);
+			if (catch_up_time !== 0) {
+				owl_food = owl_food + (food_prod * catch_up_time);
+				all_time_food += (food_prod * catch_up_time);
+				//("You gained " + (format_number(catch_up_time * food_prod)) + " owl food while you were gone");
+				catch_up_time = 0;
+			}
+			update_numbers(food_prod / time_step* 1000);
+		},time_step);
+	</script>
+</head>
+	<body>
+		<script>
+			load();
+		</script>
+		<div class="title">
+			Hello and welcome to Owls!
+		</div>
+		<div class="container">
+			<div id="instructions">
+				<br>How To Play:</br>
+					<br>click the difernt pictures to buy yourself more owl food production</br>
+					wich will give you more owl food to buy more owls
+					<br>once you have enough owl food you can warp through a portal</br>
+					and get an upgrade
+					<br>Hope You Enjoy!</br>
+			</div>
+			<div class="container-col">
+				<button class="button" onclick=save()>Save</button>
+				<button class="button" onclick=load()>Load</button>
+				<button class="button" onclick=clearStorage()>Reset</button>
+				<button class="button" onclick=warp()>Warp</button>
+				<button class="button" onclick=_export()>Export</button>
+				<button class="button" onclick=_import()>Import</button>
+			</div>
+            <div>
+				<div>
+					<audio controls="controls" loop="loop">
+						<source src="Ava_Max-So_Am_I.mp3" type="audio/mpeg" />
+					</audio>
+					so am i
+				</div>
+				<div>
+					<audio controls="controls" loop="loop">
+						<source src="Alan_Walker-Faded.mp3" type="audio/mpeg" />
+					</audio>
+					faded
+				</div>
+				<div>
+					<audio controls="controls" loop="loop">
+						<source src="Warriors.mp3" type="audio/mpeg" />
+					</audio>
+					warriors
+				</div>
+			</div>
+
+		</div>
+	</body>
+
+	    <div class="tooltip">
+	      <img onclick=add_owl_food() id="owl_food" class="img_left" src="data:image/png;base64,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" alt="owl food">
+	      <span id="owl_food_tt" class="tooltiptext"></span>
+	    </div>
+
+	    <div class="tooltip">
+	      <img id="food_prod" class="img_left" src="https://i.pinimg.com/originals/b3/b6/7f/b3b67fb060a4aa772504cd6df018941d.png" alt="pood production">
+	      <span id="food_prod_tt" class="tooltiptext"></span>
+	    </div>
+
+		<div class="tooltip">
+			<img onclick="add_owlets()" id="add_owlet_img" class="img_left" src="https://i.pinimg.com/736x/7a/8b/2e/7a8b2e5c9d16748f700a40c3fa66d372--cute-clipart-baby-owls.jpg" alt="owlet"/>
+			<span id="owlet_tt" class="tooltiptext"></span>
+		</div>
+
+		<div class="tooltip">
+			<img onclick="add_owls()" id="add_owl_img" class="img_left" src="http://www.clker.com/cliparts/I/q/o/O/c/l/green-owl-hi.png" alt="owl"/>
+			<span id="owl_tt" class="tooltiptext"></span>
+		</div>
+
+		<div class="tooltip">
+			<img onclick="add_pet_stores()" id="add_pet_store_img"  class="img_left" src="http://www.aquariumdetective.com/images/fishstores.jpg" alt="pet store">
+			<span id="pet_store_tt" class="tooltiptext"></span>
+		</div>
+
+		<div class="tooltip">
+			<img onclick="add_factories()" id="add_factory_img" class="img_left" src="https://staticeurobiz.europeanchamber.com.cn/wp-content/uploads/2016/02/green-cartoon-factory.png" alt="factory">
+			<span id="factory_tt" class="tooltiptext"></span>
+		</div>
+		
+		<div class="tooltip">
+			<img onclick="add_bank()" id="add_bank_img" class="img_left" src="https://www.how-to-draw-funny-cartoons.com/image-files/cartoon-bank-6.gif" alt="bank">
+			<span id="bank_tt" class="tooltiptext"></span>
+		</div>
+
+		<div class="tooltip">
+			<img onclick="add_wizard()" id="add_wizard_img" class="img_left" src="http://www.people-clipart.com/people_clipart_images/sorcerer_or_wizard_in_a_long_flowing_robe_with_stars_carrying_a_magic_wand_0521-1010-2714-0233_SMU.jpg" alt="wizard">
+			<span id="wizard_tt" class="tooltiptext"></span>
+		</div>
+
+		<div class="tooltip">
+			<img onclick="add_portal()" id="add_portal_img" class="img_left" src="https://ih1.redbubble.net/image.355167614.7205/st%2Csmall%2C215x235-pad%2C210x230%2Cf8f8f8.lite-1u3.jpg" alt="portal">
+			<span id="portal_tt" class="tooltiptext"></span>
+		</div>
+
+		<div class="tooltip">
+			<img onclick="add_time_machine()" id="add_time_machine_img" class="img_left" src="https://vignette.wikia.nocookie.net/king-harkinian/images/1/12/Image.gif/revision/latest?cb=20151130022540" alt="time machine">
+			<span id="time_machine_tt" class="tooltiptext"></span>
+		</div>
+		</div>
+
+		<div id="food"></div>
+		<div id="owlets"></div>
+		<div id="owls"></div>
+		<div id="pet_stores"></div>
+		<div id="factories"></div>
+		<div id="banks"></div>
+		<div id="wizards"></div>
+		<div id="food_prod"></div>
+		<div id="portals"></div>
+		<div id="time_machines"></div>
+		<br/>
+	
+</html>
