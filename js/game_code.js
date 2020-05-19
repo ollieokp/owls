@@ -20,11 +20,7 @@ function make_data() {
 		"factory_cost": factory_cost,
 		"bank_cost": bank_cost,
 		"wizard_cost": wizard_cost,
-        //if (portal_cost == NaN) {
 		"portal_cost": portal_cost,
-        //} else {
-            
-        //}
 		"time_machine_cost": time_machine_cost,
    		"warping_bonus": warping_bonus,  
 
@@ -66,9 +62,8 @@ function load_data(data) {
 		wizards = data ["wizards"];
 		wizard_cost = data["wizard_cost"];
 		portals = data["portals"];
-        if (parseFloatdata(["portal_cost"]) == "NaN") {
+        if (isNaN(data["portal_cost"])) {
             data["portal_cost"] = 100000000;
-            console.log("hi");
         }
 		portal_cost = data["portal_cost"];
 		time_machines = data["time_machines"];
@@ -162,7 +157,7 @@ function clearStorage() {
                 wizard_cost = 10000000;
 
                 portals = 0;
-                portal_cost = 100000000
+                portal_cost = 100000000;
 
                 time_machines = 0;
                 time_machine_cost = 1000000000;
