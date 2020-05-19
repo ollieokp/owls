@@ -179,7 +179,7 @@
 				  time_machines = 0;
 				  time_machine_cost = 1000000000
 				  owl_food = 100;
-				  warping_bonus += all_time_food * 0.0001;
+				  warping_bonus += all_time_food * 0.0000001;
 				  all_time_food = 0;
 					
 			  }
@@ -286,7 +286,7 @@
 		
 		var intervalId = setInterval(function () {
 			var food_prod = (owlets + owls*2 + pet_stores*4 + factories*8 + banks * 16 + wizards*32 + portals*64 + time_machines*128) * time_step / 1000;
-			food_prod += food_prod * warping_bonus;
+			food_prod += food_prod * warping_bonus / 100;
 			owl_food = owl_food + food_prod;
 			all_time_food += food_prod;
 			update_visibility(all_time_food);
@@ -312,10 +312,9 @@
 			<div id="instructions">
 				<br>How To Play:</br>
 					<br>click the difernt pictures to buy yourself more owl food production</br>
-					wich will give you more owl food to buy more owls
-					<br>once you have enough owl food you can warp through a portal</br>
-					and get an upgrade
-					<br>Hope You Enjoy!</br>
+					which will give you more owl food to buy more owls
+          <br>once you have enough owl food you can warp to another dimension</br>
+					Hope You Enjoy!
 			</div>
 			<div class="container-col">
 				<button class="button" onclick=save()>Save</button>
@@ -340,7 +339,7 @@
 				</div>
 				<div>
 					<audio controls="controls" loop="loop">
-						<source src="Warriors.mp3" type="audio/mpeg" />
+						<source src="Imagine_Dragons-Warriors.mp3" type="audio/mpeg" />
 					</audio>
 					warriors
 				</div>
