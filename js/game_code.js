@@ -20,7 +20,11 @@ function make_data() {
 		"factory_cost": factory_cost,
 		"bank_cost": bank_cost,
 		"wizard_cost": wizard_cost,
+        //if (portal_cost == NaN) {
 		"portal_cost": portal_cost,
+        //} else {
+            
+        //}
 		"time_machine_cost": time_machine_cost,
    		"warping_bonus": warping_bonus,  
 
@@ -62,7 +66,11 @@ function load_data(data) {
 		wizards = data ["wizards"];
 		wizard_cost = data["wizard_cost"];
 		portals = data["portals"];
-		portal_cost = data["potal_cost"];
+        if (parseFloatdata(["portal_cost"]) == "NaN") {
+            data["portal_cost"] = 100000000;
+            console.log("hi");
+        }
+		portal_cost = data["portal_cost"];
 		time_machines = data["time_machines"];
 		time_machine_cost = data["time_machine_cost"];
     		warping_bonus = data["warping_bonus"];
@@ -77,7 +85,7 @@ function load_data(data) {
             icon: 'success',
 		    title: 'Your game has been loaded',
 	 	    //text: "You Gained " + (format_number(catch_up_time * food_prod)) + " owl food while you were gone"),
-		    showConfirmButton: 'true',
+		    showConfirmButton: false,
 		    timer: 1500,
 		})
 	}
